@@ -24,11 +24,12 @@ exports.csv = function(req, res) {
       var csvString;
 
       // Column names
-      csvString += keys.join(",") + "\n";
+      csvString += keys.join(",") + ",created,\n";
 
       // Rows
       for(result in results) {
         for (key in keys) csvString += results[result].data[keys[key]] + ",";
+        csvString += results[result].created + ",";
         csvString += "\n";
       }
 
