@@ -2,6 +2,7 @@ extends ../layout
 
 block content
   h3 Results for #{dataset_name}
+  a(href="/datasets/#{dataset_name}.csv") Download as CSV
 
   table.table.table-bordered
     thead

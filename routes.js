@@ -2,6 +2,7 @@ exports.init = function(app){
   app.get('/', require('./controllers/main').index);
 
   app.get('/datasets', require('./controllers/dataset').index);
+  app.get('/datasets/(:dataset_name).csv', require('./controllers/dataset').csv);
   app.get('/datasets/(:dataset_name)', require('./controllers/dataset').show);
   app.post('/datasets/(:dataset_name)', require('./controllers/dataset').postDatum);
 
