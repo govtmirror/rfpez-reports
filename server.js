@@ -9,6 +9,7 @@ var express = require('express')
   , path = require('path')
   , mongoose = require('mongoose')
   , fs = require('fs');
+//  , passport = require('passport');
 
 
 global.DB = mongoose.createConnection('localhost', 'rfpez-reports');
@@ -22,6 +23,27 @@ try {
     process.exit(1);
 }
 
+// passport.use(new GitHubStrategy({
+//     clientID: "asdf",
+//     clientSecret: "asdf",
+//     callbackURL: "http://localhost:"+config.port+"/auth/github/callback"
+//   },
+//   function(accessToken, refreshToken, profile, done) {
+//     User.findOne({token: profile.id, provider: "github"}, function (err, user) {
+//       return done(err, user);
+//     });
+//   }
+// ));
+
+// passport.serializeUser(function(user, done) {
+//   done(null, user.id);
+// });
+
+// passport.deserializeUser(function(id, done) {
+//   User.findById(id, function (err, user) {
+//     done(err, user);
+//   });
+// });
 
 var app = express();
 app.set("trust proxy", true);
@@ -42,6 +64,10 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
+
+  // app.use(passport.initialize());
+  // app.use(passport.session());
+
   app.use(app.router);
   app.use(require('stylus').middleware(__dirname + '/public'));
   app.use(express.static(path.join(__dirname, 'public')));

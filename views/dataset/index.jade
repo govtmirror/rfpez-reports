@@ -1,0 +1,9 @@
+extends ../layout
+
+block content
+  h3 My Datasets
+
+  ul
+    for dataset in datasets
+      li
+        a(href="/datasets/#{dataset}") #{dataset}

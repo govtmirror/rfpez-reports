@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  h3 Results for #{dataset_name}
+
+  table.table.table-bordered
+    thead
+      tr
+        th dataset_name
+        for key in keys
+          th #{key}
+        th created
+    for datum in data
+      tr
+        td #{datum.dataset_name}
+        for key in keys
+          td #{datum.data[key]}
+        td #{datum.created}

@@ -1,0 +1,14 @@
+!!! 5
+html
+  head
+    title RFP-EZ Reports
+    link(rel="stylesheet", href="/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/css/bootstrap-responsive.min.css")
+  body
+    include nav
+
+    .container
+      if typeof flash !== 'undefined'
+        each val, key in flash
+          .alert(class="alert-#{key}") #{val}
+      block content
