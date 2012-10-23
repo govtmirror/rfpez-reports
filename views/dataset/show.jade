@@ -9,9 +9,9 @@ block content
       tr
         for key in keys
           th #{key}
-        th created
+        th created_at
     for datum in data
       tr
         for key in keys
           td #{datum.data[key]}
-        td #{datum.created}
+        td #{datum.created_at}

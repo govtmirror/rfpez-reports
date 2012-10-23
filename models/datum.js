@@ -2,13 +2,14 @@ var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
   dataset_name: {type: String, index: true},
-  data: {}
+  data: {},
+  created_at: String
 });
 
 schema.statics.all_keys = function (cb) {
   this.collection.mapReduce(
-    "function() { for (var key in this.data) { emit(key, null); } }",
-    "function(key, stuff) { return null; } ",
+    function() { for (var key in this.data) { emit(key, null); } },
+    function(key, stuff) { return null; },
     { out: { inline: 1 } },
     function(err, res){
       var keys = [];
@@ -20,6 +21,10 @@ schema.statics.all_keys = function (cb) {
   );
 };
 
-// plugin mongoose troop
+schema.pre('save', function (next) {
+  var datum = this;
+  if (!this.created_at) this.created_at = (new Date()).getTime();
+  next();
+});
 
 module.exports = DB.model('Datum', schema);
