@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var schema = new mongoose.Schema({
   dataset_name: {type: String, index: true},
   data: {},
-  created_at: String
+  created_at: {type: Date, default: Date.now}
 });
 
 schema.statics.all_keys = function (cb) {
@@ -20,11 +20,5 @@ schema.statics.all_keys = function (cb) {
     }
   );
 };
-
-schema.pre('save', function (next) {
-  var datum = this;
-  if (!this.created_at) this.created_at = (new Date()).getTime();
-  next();
-});
 
 module.exports = DB.model('Datum', schema);
