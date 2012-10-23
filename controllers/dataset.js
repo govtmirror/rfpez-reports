@@ -55,10 +55,18 @@ exports.csv = function(req, res) {
 }
 
 exports.postDatum = function(req, res) {
-  var datum = new Datum({
-    dataset_name: req.params.dataset_name,
-    data: req.body
-  }).save();
+  var api_key = req.query.api_key;
 
-  res.send("success!");
+  User.findOne({api_key: api_key, dataset_permissions: req.params.dataset_name}, function(err, user){
+    if (!api_key || api_key == "" || !user) return res.send("not authorized");
+
+    var datum = new Datum({
+      dataset_name: req.params.dataset_name,
+      data: req.body
+    });
+
+    datum.save(function(err){
+      res.send("success!");
+    });
+  });
 }
