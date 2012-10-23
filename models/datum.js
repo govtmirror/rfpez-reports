@@ -6,11 +6,11 @@ var schema = new mongoose.Schema({
   created_at: {type: Date, default: Date.now}
 });
 
-schema.statics.all_keys = function (cb) {
+schema.statics.all_keys = function (dataset_name, cb) {
   this.collection.mapReduce(
     function() { for (var key in this.data) { emit(key, null); } },
     function(key, stuff) { return null; },
-    { out: { inline: 1 } },
+    { out: { inline: 1 }, query: {dataset_name: dataset_name} },
     function(err, res){
       var keys = [];
       for (key in res) {

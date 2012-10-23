@@ -3,6 +3,10 @@ extends ../layout
 block content
   h3 My Datasets
 
+  form(action="/datasets", method="post")
+    input(type="text", name="name", placeholder="Dataset Name")
+    button.btn.btn-success Create New
+
   ul
     for dataset in datasets
       li

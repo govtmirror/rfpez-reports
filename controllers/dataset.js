@@ -1,4 +1,5 @@
 var Datum = require("../models/datum");
+var User = require("../models/user");
 
 exports.index = function(req, res) {
   req.user.my_datasets(function(datasets){
@@ -6,8 +7,21 @@ exports.index = function(req, res) {
   });
 }
 
+exports.create = function(req, res) {
+  User.dataset_exists(req.body.name, function(dataset_exists){
+    if (!req.body.name.replace(/\s/g,"")) return res.redirect("datasets"); // name can't be blank
+    if (dataset_exists) return res.redirect("datasets"); // already exists
+
+    req.user.dataset_permissions.push(req.body.name);
+    req.user.save(function(err){
+      if (err) console.log(err);
+      res.redirect("datasets");
+    });
+  });
+}
+
 exports.show = function(req, res) {
-  Datum.all_keys(function(keys){
+  Datum.all_keys(req.params.dataset_name, function(keys){
     Datum.find({dataset_name: req.params.dataset_name}, function(err, results){
       res.render("dataset/show", {
         data: results,
@@ -19,7 +33,7 @@ exports.show = function(req, res) {
 }
 
 exports.csv = function(req, res) {
-  Datum.all_keys(function(keys){
+  Datum.all_keys(req.params.dataset_name, function(keys){
     Datum.find({dataset_name: req.params.dataset_name}, function(err, results){
       var csvString;
 
