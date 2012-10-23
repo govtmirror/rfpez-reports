@@ -1,8 +1,8 @@
 var Datum = require("../models/datum");
 
 exports.index = function(req, res) {
-  Datum.collection.distinct("dataset_name", function(err, results){
-    res.render("dataset/index", {datasets: results});
+  req.user.my_datasets(function(datasets){
+    res.render("dataset/index", {datasets: datasets});
   });
 }
 

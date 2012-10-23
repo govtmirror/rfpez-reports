@@ -13,7 +13,7 @@ exports.init = function(app){
   app.post('/applications', filters.auth, require('./controllers/application').create);
 
   app.get('/login', require('./controllers/auth').login);
-  app.get('/logout', require('./controllers/auth').logout);
+  app.get('/logout', filters.auth, require('./controllers/auth').logout);
   app.get('/auth/github/callback',
           filters.loginGithub(),
           require('./controllers/auth').afterGithub);
