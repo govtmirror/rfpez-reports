@@ -10,5 +10,9 @@
           li
             a(href="/applications") My Applications
         ul.nav.pull-right
-          li
-            a(href="#") User@example.com
+          if user
+            li
+              a(href="/logout") Logout #{user.username}
+          else
+            li
+              a(href="/auth/github/callback") Login with GitHub

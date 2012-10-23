@@ -1,3 +1,5 @@
+var filters = require('./library/filters');
+
 exports.init = function(app){
   app.get('/', require('./controllers/main').index);
 
@@ -10,7 +12,8 @@ exports.init = function(app){
   app.get('/applications/new', require('./controllers/application').new);
   app.post('/applications', require('./controllers/application').create);
 
-  // app.get('/auth/github/callback',
-  //         passport.authenticate('github', { failureRedirect: '/login' }),
-  //         require('./controllers/auth').github);
+  app.get('/logout', require('./controllers/auth').logout);
+  app.get('/auth/github/callback',
+          filters.auth(),
+          require('./controllers/auth').github);
 };

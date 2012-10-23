@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var schema = new mongoose.Schema({
   is_admin: Boolean,
   dataset_permissions: Array,
-  email: String,
+  username: String,
   token: String,
   provider: String
 });

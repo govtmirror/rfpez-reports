@@ -1,3 +1,8 @@
 exports.github = function(req, res) {
-  res.send('authed');
+  res.redirect('/');
+}
+
+exports.logout = function(req, res) {
+  req.logout();
+  res.redirect('/');
 }

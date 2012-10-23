@@ -8,11 +8,12 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , mongoose = require('mongoose')
-  , fs = require('fs');
-//  , passport = require('passport');
-
+  , fs = require('fs')
+  , passport = require('passport')
+  , GitHubStrategy = require('passport-github').Strategy;
 
 global.DB = mongoose.createConnection('localhost', 'rfpez-reports');
+var User = require('./models/user');
 
 // Configuration
 try {
@@ -23,27 +24,31 @@ try {
     process.exit(1);
 }
 
-// passport.use(new GitHubStrategy({
-//     clientID: "asdf",
-//     clientSecret: "asdf",
-//     callbackURL: "http://localhost:"+config.port+"/auth/github/callback"
-//   },
-//   function(accessToken, refreshToken, profile, done) {
-//     User.findOne({token: profile.id, provider: "github"}, function (err, user) {
-//       return done(err, user);
-//     });
-//   }
-// ));
+passport.use(new GitHubStrategy({
+    clientID: "a85764447741acee227e",
+    clientSecret: "1bba6b8e6e97656e776b643c854e28b92ba3a38b",
+    callbackURL: "http://localhost:"+config.port+"/auth/github/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    User.findOne({token: profile.id, provider: "github"}, function (err, user) {
+      if (!user) {
+        var user = new User({token: profile.id, provider: "github", username: profile.username});
+        user.save()
+      }
+      return done(err, user);
+    });
+  }
+));
 
-// passport.serializeUser(function(user, done) {
-//   done(null, user.id);
-// });
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
 
-// passport.deserializeUser(function(id, done) {
-//   User.findById(id, function (err, user) {
-//     done(err, user);
-//   });
-// });
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function (err, user) {
+    done(err, user);
+  });
+});
 
 var app = express();
 app.set("trust proxy", true);
@@ -65,8 +70,14 @@ app.configure(function(){
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
 
-  // app.use(passport.initialize());
-  // app.use(passport.session());
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  app.use(function(req, res, next){
+    res.locals.user = req.user;
+    next();
+  });
+
 
   app.use(app.router);
   app.use(require('stylus').middleware(__dirname + '/public'));
