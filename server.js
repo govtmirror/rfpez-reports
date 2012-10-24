@@ -30,7 +30,7 @@ try {
 passport.use(new GitHubStrategy({
     clientID: config.github_id,
     clientSecret: config.github_secret,
-    callbackURL: "http://localhost:"+config.port+"/auth/github/callback"
+    callbackURL: config.base_url+"/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     User.findOne({token: profile.id, provider: "github"}, function (err, user) {
@@ -78,7 +78,7 @@ app.configure(function(){
 
   app.use(function(req, res, next){
     res.locals.user = req.user;
-    res.locals.base_url = "http://" + req.header('host');
+    res.locals.base_url = config.base_url;
     next();
   });
 
