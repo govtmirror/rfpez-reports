@@ -12,6 +12,7 @@ var express = require('express')
   , passport = require('passport')
   , GitHubStrategy = require('passport-github').Strategy;
 
+var RedisStore = require('connect-redis')(express);
 global.DB = mongoose.createConnection('localhost', 'rfpez-reports');
 var User = require('./models/user');
 
@@ -68,7 +69,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser('your secret here'));
-  app.use(express.session());
+  app.use(express.session({secret : 'Waaaaazzzuuuup!', store : new RedisStore}));
 
   app.use(passport.initialize());
   app.use(passport.session());
