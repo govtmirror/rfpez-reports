@@ -32,7 +32,7 @@ exports.show = function(req, res) {
 exports.csv = function(req, res) {
   Datum.all_keys(req.params.dataset_name, function(keys){
     Datum.find({dataset_name: req.params.dataset_name}, function(err, results){
-      var csvString;
+      var csvString = "";
 
       // Column names
       csvString += keys.join(",") + ",created_at,\n";
