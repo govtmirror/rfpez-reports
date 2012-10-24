@@ -28,8 +28,8 @@ try {
 }
 
 passport.use(new GitHubStrategy({
-    clientID: "a85764447741acee227e",
-    clientSecret: "1bba6b8e6e97656e776b643c854e28b92ba3a38b",
+    clientID: config.github_id,
+    clientSecret: config.github_secret,
     callbackURL: "http://localhost:"+config.port+"/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, done) {
@@ -70,8 +70,8 @@ app.configure(function(){
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(express.cookieParser('your secret here'));
-  app.use(express.session({secret : 'Waaaaazzzuuuup!', store : new RedisStore}));
+  app.use(express.cookieParser(config.cookie_secret));
+  app.use(express.session({secret : config.cookie_secret, store : new RedisStore}));
 
   app.use(passport.initialize());
   app.use(passport.session());
