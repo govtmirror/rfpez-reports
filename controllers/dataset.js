@@ -21,15 +21,12 @@ exports.create = function(req, res) {
 }
 
 exports.show = function(req, res) {
-  Datum.all_keys(req.params.dataset_name, function(keys){
-    Datum.find({dataset_name: req.params.dataset_name}, function(err, results){
-      res.render("dataset/show", {
-        data: results,
-        dataset_name: req.params.dataset_name,
-        keys: keys
-      });
-    });
-  })
+  res.render("dataset/show", {
+    data: Datum.find({dataset_name: req.params.dataset_name}),
+    dataset_name: req.params.dataset_name,
+    collaborators: Datum.collaborators_for_dataset(req.params.dataset_name),
+    keys: Datum.all_keys(req.params.dataset_name)
+  });
 }
 
 exports.csv = function(req, res) {
@@ -67,6 +64,19 @@ exports.postDatum = function(req, res) {
 
     datum.save(function(err){
       res.send("success!");
+    });
+  });
+}
+
+exports.addCollaborator = function(req, res) {
+  User.findOne({username: req.param('username')}, function(err, user){
+    if (!user) return res.send({status: "error", message: "User not found."});
+    if (user.dataset_permissions.indexOf(req.params.dataset_name) !== -1)
+      return res.send({status: "error", message: "User already has permission."});
+
+    user.dataset_permissions.push(req.params.dataset_name);
+    user.save(function(err){
+      return res.send({status: "success"});
     });
   });
 }

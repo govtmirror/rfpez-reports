@@ -7,6 +7,8 @@ var schema = new mongoose.Schema({
 });
 
 schema.statics.all_keys = function (dataset_name, cb) {
+  var promise = new mongoose.Promise();
+
   this.collection.mapReduce(
     function() { for (var key in this.data) { emit(key, null); } },
     function(key, stuff) { return null; },
@@ -16,9 +18,16 @@ schema.statics.all_keys = function (dataset_name, cb) {
       for (key in res) {
         keys.push(res[key]._id);
       }
-      cb(keys);
+      promise.complete(keys);
     }
   );
+
+  return promise;
 };
+
+schema.statics.collaborators_for_dataset = function (dataset_name) {
+  var User = require('./user');
+  return User.find({dataset_permissions: dataset_name});
+}
 
 module.exports = DB.model('Datum', schema);

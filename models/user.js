@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var Datum = require('./datum');
 
 var schema = new mongoose.Schema({
   is_admin: Boolean,
@@ -13,6 +12,7 @@ var schema = new mongoose.Schema({
 schema.index({provider: 1, token: 1}, {unique: true});
 
 schema.methods.my_datasets = function(cb) {
+  var Datum = require('./datum');
   var user = this;
   Datum.collection.distinct("dataset_name", function(err, results){
     var datasets = [];
@@ -27,6 +27,7 @@ schema.methods.my_datasets = function(cb) {
 }
 
 schema.statics.dataset_exists = function (dataset_name, cb) {
+  var Datum = require('./datum');
   var User = this;
   Datum.findOne({dataset_name: dataset_name}, function(err, result){
     if (result) return cb(true);

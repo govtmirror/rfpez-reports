@@ -4,7 +4,7 @@ html
     title RFP-EZ Reports
     link(rel="stylesheet", href="/css/bootstrap.min.css")
     link(rel="stylesheet", href="/css/bootstrap-responsive.min.css")
-    script(src="/js/modernizr.js")
+    script(src="/js/vendor/modernizr.js")
   body
     include nav
 
@@ -13,3 +13,10 @@ html
         each val, key in flash
           .alert(class="alert-#{key}") #{val}
       block content
+
+    script(src="/js/vendor/jquery.js")
+    script(src="/js/vendor/jquery.form.js")
+    script(src="/js/vendor/bootstrap-typeahead.js")
+    script(src="/js/vendor/bootstrap-button.js")
+    script(src="/js/flash-button.js")
+    script(src="/js/main.js")

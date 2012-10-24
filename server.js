@@ -12,6 +12,8 @@ var express = require('express')
   , passport = require('passport')
   , GitHubStrategy = require('passport-github').Strategy;
 
+require('express-mongoose');
+
 var RedisStore = require('connect-redis')(express);
 global.DB = mongoose.createConnection('localhost', 'rfpez-reports');
 var User = require('./models/user');

@@ -1,6 +1,26 @@
 extends ../layout
 
 block content
+
+  h3 Collaborators
+
+  table.table.table-bordered.collaborators-table
+    thead
+      tr
+        th Username
+
+    tbody
+      for user in collaborators
+        tr
+          td #{user.username}
+
+    tfoot
+      tr
+        td
+          form#add-collaborator-form(action="/datasets/#{dataset_name}/collaborators", method="POST")
+            input(type="text", name="username", placeholder="Username", autocomplete="off")
+            button.btn.btn-primary(data-loading-text="Adding...") Add Collaborator
+
   h3 Results for #{dataset_name}
 
   .alert.alert-info To add data, send a POST request to #{base_url}/datasets/#{dataset_name}. Your API key is #{user.api_key}
