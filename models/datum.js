@@ -18,6 +18,7 @@ schema.statics.all_keys = function (dataset_name, cb) {
       for (key in res) {
         keys.push(res[key]._id);
       }
+      if (cb) return cb(keys);
       promise.complete(keys);
     }
   );
