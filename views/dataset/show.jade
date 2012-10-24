@@ -3,7 +3,7 @@ extends ../layout
 block content
   h3 Results for #{dataset_name}
 
-  .alert.alert-info To add data, send a POST request to /datasets/#{dataset_name}. Your API key is #{user.api_key}
+  .alert.alert-info To add data, send a POST request to #{base_url}/datasets/#{dataset_name}. Your API key is #{user.api_key}
 
   a(href="/datasets/#{dataset_name}.csv") Download as CSV
 

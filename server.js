@@ -75,6 +75,7 @@ app.configure(function(){
 
   app.use(function(req, res, next){
     res.locals.user = req.user;
+    res.locals.base_url = "http://" + req.header('host');
     next();
   });
 
